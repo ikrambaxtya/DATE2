@@ -4,7 +4,7 @@
   "private": true,
   "description": "ڕۆژ ژمێری ڕادیۆی سوننەت",
   "scripts": {
-    "build": "echo 'Static assets ready for deployment'"
+    "build": "node build.js"
   },
   "devDependencies": {
     "wrangler": "^3.100.0"
