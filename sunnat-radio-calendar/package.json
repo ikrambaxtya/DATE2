@@ -1,0 +1,12 @@
+{
+  "name": "date",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ڕۆژ ژمێری ڕادیۆی سوننەت",
+  "scripts": {
+    "build": "echo 'Static assets ready for deployment'"
+  },
+  "devDependencies": {
+    "wrangler": "^3.100.0"
+  }
+}
