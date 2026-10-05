@@ -345,6 +345,20 @@ body {
     box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2);
 }
 
+.main-website-btn {
+    border-color: rgba(13, 148, 136, 0.35);
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+    color: #0f766e;
+    text-decoration: none;
+}
+
+.main-website-btn:hover {
+    background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+    border-color: var(--accent-teal);
+    color: #115e59;
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.2);
+}
+
 /* --------------------------------------------------------------------------
    7. Live Stream Player Bar
    -------------------------------------------------------------------------- */
@@ -1067,6 +1081,16 @@ body {
 }
 
 /* Brand Buttons */
+.btn-main-website {
+    background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+}
+
+.btn-main-website:hover {
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+    box-shadow: 0 12px 26px rgba(13, 148, 136, 0.4);
+}
+
 .btn-live-stream {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
@@ -1584,7 +1608,24 @@ body {
 .footer-content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-website-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-gold-dark);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: color var(--transition-fast);
+}
+
+.footer-website-link:hover {
+    color: var(--accent-teal);
+    text-decoration: underline;
 }
 
 .copyright-text {
