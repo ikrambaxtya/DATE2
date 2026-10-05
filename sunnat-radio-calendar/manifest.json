@@ -1,0 +1,22 @@
+{
+  "name": "ڕۆژ ژمێری ڕادیۆی سوننەت",
+  "short_name": "ڕادیۆی سوننەت",
+  "description": "ڕۆژژمێری فەرمی ڕادیۆی سوننەت - کاتی نوێژەکان، بەرواری کۆچی، کوردی و زاینی و پەخشی ڕاستەوخۆ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#d97706",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

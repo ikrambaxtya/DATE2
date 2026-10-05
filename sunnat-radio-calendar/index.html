@@ -3,12 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ڕۆژ ژمێری ڕادیۆی سوننەت</title>
+    <title>ڕۆژ ژمێری ڕادیۆی سوننەت | کاتی نوێژەکان و بەرواری ئەمڕۆ</title>
     
     <!-- Meta SEO -->
-    <meta name="description" content="ڕۆژ ژمێری فەرمی ڕادیۆی سوننەت - کاتی ئێستا، ڕۆژژمێری کۆچی، کوردی و زاینی و کاتی نوێژەکان">
+    <meta name="description" content="ڕۆژژمێری فەرمی ڕادیۆی سوننەت - کاتی ئێستا، ڕۆژژمێری کۆچی، کوردی و زاینی، کاتی نوێژەکانی شارەکانی کوردستان و عێراق و پەخشی ڕاستەوخۆ">
+    <meta name="keywords" content="ڕادیۆی سوننەت, ڕۆژژمێری سوننەت, کاتی نوێژەکان, ڕۆژژمێری کۆچی, ڕۆژژمێری کوردی, کاتی بانگ, پەخشی ڕادیۆ, هەولێر, سلێمانی, دهۆک">
     <meta name="author" content="ڕادیۆی سوننەت">
-    
+    <meta name="robots" content="index, follow">
+
+    <!-- Favicon & Touch Icons (Site Logo) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d97706">
+    <meta name="msapplication-TileColor" content="#d97706">
+    <meta name="msapplication-TileImage" content="assets/logo.png">
+
+    <!-- Open Graph / Facebook / WhatsApp / Telegram Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ڕادیۆی سوننەت">
+    <meta property="og:url" content="https://radiosunnat.net/">
+    <meta property="og:title" content="ڕۆژ ژمێری ڕادیۆی سوننەت | کاتی نوێژەکان و بەرواری ئەمڕۆ">
+    <meta property="og:description" content="ڕۆژژمێری فەرمی ڕادیۆی سوننەت - بەرواری کۆچی، کوردی و زاینی، کاتی دروستی نوێژەکان و پەخشی دەنگیی ڕاستەوخۆ">
+    <meta property="og:image" content="assets/share-preview.jpg">
+    <meta property="og:image:secure_url" content="assets/share-preview.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="499">
+    <meta property="og:image:alt" content="ئەپلیکەیشن و ڕۆژژمێری ڕادیۆی سوننەت">
+    <meta property="og:locale" content="ckb">
+
+    <!-- Twitter / X Card Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://radiosunnat.net/">
+    <meta name="twitter:title" content="ڕۆژ ژمێری ڕادیۆی سوننەت | کاتی نوێژەکان و بەرواری ئەمڕۆ">
+    <meta name="twitter:description" content="ڕۆژژمێری فەرمی ڕادیۆی سوننەت - بەرواری کۆچی، کوردی و زاینی، کاتی دروستی نوێژەکان و پەخشی دەنگیی ڕاستەوخۆ">
+    <meta name="twitter:image" content="assets/share-preview.jpg">
+    <meta name="twitter:image:alt" content="ئەپلیکەیشن و ڕۆژژمێری ڕادیۆی سوننەت">
+
+    <!-- Schema.org Microdata & Direct Link Previews -->
+    <meta itemprop="name" content="ڕۆژ ژمێری ڕادیۆی سوننەت">
+    <meta itemprop="description" content="ڕۆژژمێری فەرمی ڕادیۆی سوننەت - کاتی نوێژەکان و بەرواری ئەمڕۆ">
+    <meta itemprop="image" content="assets/share-preview.jpg">
+    <link rel="image_src" href="assets/share-preview.jpg">
+
     <!-- Google Fonts: IBM Plex Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +76,7 @@
             <div class="header-branding">
                 <div class="brand-logo-wrapper">
                     <div class="logo-img-wrapper">
-                        <img src="https://pub-80080313dfa4407c8b6288d23c81358b.r2.dev/profile%20radio%20png.png" alt="ڕادیۆی سوننەت" class="brand-logo-img">
+                        <img src="assets/logo.png" alt="ڕادیۆی سوننەت" class="brand-logo-img">
                         <span class="live-signal-ring"></span>
                     </div>
                     <div class="brand-text">
@@ -52,6 +91,12 @@
                     <span class="day-label">ئەمڕۆ:</span>
                     <span class="day-name-active" id="active-day-name">چوارشەممە</span>
                 </div>
+
+                <!-- Share Website Button -->
+                <button id="share-website-btn" class="control-btn share-action-btn" title="هاوبەشکردنی ماڵپەڕ لەگەڵ هاوڕێیان">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>هاوبەشکردن</span>
+                </button>
 
                 <!-- Live Stream Player Button Toggle -->
                 <button id="audio-toggle-btn" class="control-btn live-audio-btn" title="پەخشی دەنگیی ڕادیۆی سوننەت">
@@ -298,6 +343,49 @@
                 </div>
             </section>
 
+            <!-- Official Mobile App Showcase Section -->
+            <section class="app-promo-card glass-card">
+                <div class="app-promo-grid">
+                    <div class="app-promo-content">
+                        <div class="app-promo-badge">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                            <span>ئەپلیکەیشنی فەرمی</span>
+                        </div>
+                        <h2 class="app-promo-title">ئەپلیکەیشنی ڕادیۆی سوننەت</h2>
+                        <p class="app-promo-desc">
+                            پەخشی دەنگیی ڕاستەوخۆ، کاتی نوێژەکان بۆ شارەکانی کوردستان، کتێبخانەی دەنگی و وتارە ئیسلامییەکان هەمیشە بەردەستە لەسەر مۆبایلەکەت بۆ سیستەمی ئەندرۆید و ئایفۆن (iOS).
+                        </p>
+                        <div class="app-download-buttons">
+                            <a href="https://play.google.com/store/search?q=%D8%B1%D8%A7%D8%AF%DB%8C%DB%86%DB%8C%20%D8%B3%D9%88%D9%86%D9%86%DB%87%D8%AA&c=apps" target="_blank" rel="noopener noreferrer" class="store-badge-btn google-play">
+                                <i class="fa-brands fa-google-play"></i>
+                                <div class="store-text">
+                                    <span class="store-small">داگرتن لە</span>
+                                    <strong class="store-name">Google Play</strong>
+                                </div>
+                            </a>
+                            <a href="https://apps.apple.com/search?term=%D8%B1%D8%A7%D8%AF%DB%8C%DB%86%DB%8C%20%D8%B3%D9%88%D9%86%D9%86%DB%87%D8%AA" target="_blank" rel="noopener noreferrer" class="store-badge-btn app-store">
+                                <i class="fa-brands fa-apple"></i>
+                                <div class="store-text">
+                                    <span class="store-small">داگرتن لە</span>
+                                    <strong class="store-name">App Store</strong>
+                                </div>
+                            </a>
+                            <button id="share-banner-btn" class="store-badge-btn share-app-action" title="هاوبەشکردنی لەگەڵ هاوڕێیان">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <div class="store-text">
+                                    <span class="store-small">ناردن بۆ</span>
+                                    <strong class="store-name">هاوڕێیان</strong>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="app-promo-visual">
+                        <img src="assets/share-preview.jpg" alt="ئەپلیکەیشنی ڕادیۆی سوننەت بۆ ئەندرۆید و ئایفۆن" class="app-promo-img">
+                        <div class="app-promo-glow"></div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Social Media Action Pill Buttons -->
             <section class="social-actions-section">
                 <h3 class="section-heading">کەناڵەکانی پێوەندی و پەخشی ڕادیۆی سوننەت</h3>
@@ -373,6 +461,64 @@
             <div class="modal-body">
                 <div class="months-grid" id="months-grid-container">
                     <!-- 12 months cards rendered dynamically by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Website Modal -->
+    <div id="share-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-card share-modal-card">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <i class="fa-solid fa-share-nodes modal-icon"></i>
+                    <h3>هاوبەشکردنی ماڵپەڕ لەگەڵ هاوڕێیان</h3>
+                </div>
+                <button id="close-share-modal-btn" class="close-modal-btn" title="داخستن">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body share-modal-body">
+                <!-- Share Preview Card (what the recipient sees) -->
+                <div class="share-preview-card">
+                    <div class="share-preview-img-box">
+                        <img src="assets/share-preview.jpg" alt="پێشبینینی هاوبەشکردن" class="share-preview-thumb">
+                    </div>
+                    <div class="share-preview-details">
+                        <span class="share-preview-badge">ڕادیۆی سوننەت</span>
+                        <h4 class="share-preview-title">ڕۆژ ژمێری ڕادیۆی سوننەت | کاتی نوێژەکان</h4>
+                        <p class="share-preview-desc">کاتی نوێژەکان، بەرواری کۆچی، کوردی و زاینی و پەخشی دەنگیی ڕاستەوخۆ</p>
+                    </div>
+                </div>
+
+                <div class="share-options-title">هاوبەشی پێبکە لە ڕێگەی:</div>
+                <!-- 1-Click Social Sharing -->
+                <div class="share-channels-grid">
+                    <a href="#" id="share-whatsapp" class="share-channel-btn whatsapp" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>واتسئەپ (WhatsApp)</span>
+                    </a>
+                    <a href="#" id="share-telegram" class="share-channel-btn telegram" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-telegram"></i>
+                        <span>تێلیگرام (Telegram)</span>
+                    </a>
+                    <a href="#" id="share-facebook" class="share-channel-btn facebook" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <span>فەیسبووک (Facebook)</span>
+                    </a>
+                    <a href="#" id="share-viber" class="share-channel-btn viber" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-viber"></i>
+                        <span>ڤایبەر (Viber)</span>
+                    </a>
+                </div>
+
+                <!-- Copy Link Bar -->
+                <div class="copy-link-wrapper">
+                    <input type="text" id="share-link-input" readonly class="share-link-input" value="https://radiosunnat.net/">
+                    <button id="copy-share-link-btn" class="copy-share-btn">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>کۆپیکردنی لینک</span>
+                    </button>
                 </div>
             </div>
         </div>

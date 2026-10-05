@@ -47,6 +47,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeModalBtn = document.getElementById('close-modal-btn');
     const viewMonthsBtns = document.querySelectorAll('.view-months-btn');
 
+    // Share Elements
+    const shareWebsiteBtn = document.getElementById('share-website-btn');
+    const shareBannerBtn = document.getElementById('share-banner-btn');
+    const shareModal = document.getElementById('share-modal');
+    const closeShareModalBtn = document.getElementById('close-share-modal-btn');
+    const shareLinkInput = document.getElementById('share-link-input');
+    const copyShareLinkBtn = document.getElementById('copy-share-link-btn');
+    const shareWhatsapp = document.getElementById('share-whatsapp');
+    const shareTelegram = document.getElementById('share-telegram');
+    const shareFacebook = document.getElementById('share-facebook');
+    const shareViber = document.getElementById('share-viber');
+
     // Controls & Audio
     const copyDateBtn = document.getElementById('copy-date-btn');
     const toastNotification = document.getElementById('toast-notification');
@@ -401,7 +413,118 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Initialize Saved LocalStorage Preferences & Start Real-time Clock
+    /**
+     * Share Website Logic (Web Share API + Share Modal)
+     */
+    function getShareData() {
+        const url = window.location.href.split('#')[0];
+        const title = 'ڕۆژ ژمێری ڕادیۆی سوننەت';
+        const text = 'ڕۆژژمێری فەرمی ڕادیۆی سوننەت - بەرواری کۆچی، کوردی و زاینی، کاتی دروستی نوێژەکان و پەخشی دەنگیی ڕاستەوخۆ';
+        return { url, title, text };
+    }
+
+    function openShareModal() {
+        const { url, title, text } = getShareData();
+        if (shareLinkInput) shareLinkInput.value = url;
+
+        const shareMessage = `${title}\n${text}\n${url}`;
+
+        if (shareWhatsapp) {
+            shareWhatsapp.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`;
+        }
+        if (shareTelegram) {
+            shareTelegram.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title + ' - ' + text)}`;
+        }
+        if (shareFacebook) {
+            shareFacebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        }
+        if (shareViber) {
+            shareViber.href = `viber://forward?text=${encodeURIComponent(shareMessage)}`;
+        }
+
+        if (shareModal) shareModal.classList.remove('hidden');
+    }
+
+    function closeShareModal() {
+        if (shareModal) shareModal.classList.add('hidden');
+    }
+
+    async function triggerShare() {
+        const { url, title, text } = getShareData();
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: title,
+                    text: text,
+                    url: url
+                });
+                return;
+            } catch (err) {
+                if (err && err.name !== 'AbortError') {
+                    openShareModal();
+                }
+                return;
+            }
+        }
+        openShareModal();
+    }
+
+    if (shareWebsiteBtn) {
+        shareWebsiteBtn.addEventListener('click', triggerShare);
+    }
+    if (shareBannerBtn) {
+        shareBannerBtn.addEventListener('click', triggerShare);
+    }
+    if (closeShareModalBtn) {
+        closeShareModalBtn.addEventListener('click', closeShareModal);
+    }
+    if (shareModal) {
+        shareModal.addEventListener('click', function (e) {
+            if (e.target === shareModal) closeShareModal();
+        });
+    }
+
+    if (copyShareLinkBtn && shareLinkInput) {
+        copyShareLinkBtn.addEventListener('click', function () {
+            const url = shareLinkInput.value || window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('لینکی ماڵپەڕ کۆپی کرا!');
+                });
+            } else {
+                shareLinkInput.select();
+                document.execCommand('copy');
+                showToast('لینکی ماڵپەڕ کۆپی کرا!');
+            }
+        });
+    }
+
+    /**
+     * Ensure absolute URLs for Open Graph and Twitter Card tags
+     */
+    function ensureAbsoluteMetaTags() {
+        try {
+            if (window.location.origin && window.location.origin.startsWith('http')) {
+                const absolutePreview = new URL('assets/share-preview.jpg', window.location.origin).href;
+                const ogImg = document.querySelector('meta[property="og:image"]');
+                const ogSecureImg = document.querySelector('meta[property="og:image:secure_url"]');
+                const twImg = document.querySelector('meta[name="twitter:image"]');
+                const itemImg = document.querySelector('meta[itemprop="image"]');
+                const ogUrl = document.querySelector('meta[property="og:url"]');
+
+                if (ogImg) ogImg.setAttribute('content', absolutePreview);
+                if (ogSecureImg) ogSecureImg.setAttribute('content', absolutePreview);
+                if (twImg) twImg.setAttribute('content', absolutePreview);
+                if (itemImg) itemImg.setAttribute('content', absolutePreview);
+                if (ogUrl) ogUrl.setAttribute('content', window.location.href);
+            }
+        } catch (e) {
+            console.debug('Meta tags resolve:', e);
+        }
+    }
+
+    // Initialize Preferences, Meta tags & Real-time Clock
+    ensureAbsoluteMetaTags();
     loadSavedPreferences();
     ClockEngine.start(updateClockUI);
 });
