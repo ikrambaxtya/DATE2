@@ -417,8 +417,13 @@ document.addEventListener('DOMContentLoaded', function () {
      * Share Website Logic (Web Share API + Share Modal)
      */
     function getShareData() {
-        const url = window.location.href.split('#')[0];
-        const title = 'ڕۆژ ژمێری ڕادیۆی سوننەت';
+        let url = 'https://date.radiosunnat.net/';
+        try {
+            if (window.location.origin && window.location.origin.startsWith('http')) {
+                url = window.location.href.split('#')[0];
+            }
+        } catch (e) {}
+        const title = 'ڕۆژژمێری ڕادیۆی سوننەت | Radio Sunnat Calendar';
         const text = 'ڕۆژژمێری فەرمی ڕادیۆی سوننەت - بەرواری کۆچی، کوردی و زاینی، کاتی دروستی نوێژەکان و پەخشی دەنگیی ڕاستەوخۆ';
         return { url, title, text };
     }

@@ -37,7 +37,7 @@ fs.mkdirSync(distDir, { recursive: true });
 });
 
 // Single files to copy
-['index.html', 'manifest.json'].forEach(file => {
+['index.html', 'manifest.json', 'robots.txt', 'sitemap.xml'].forEach(file => {
   const src = path.join(__dirname, file);
   const dest = path.join(distDir, file);
   if (fs.existsSync(src)) {
