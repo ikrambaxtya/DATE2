@@ -40,6 +40,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const gregorianDayOfYearEl = document.getElementById('gregorian-day-of-year');
     const gregorianMonthNumPill = document.getElementById('gregorian-month-num-pill');
 
+    // Ramadan Countdown & Dua Widget Elements
+    const ramadanCardEl = document.getElementById('ramadan-widget-card');
+    const ramadanMainTitleEl = document.getElementById('ramadan-main-title');
+    const ramadanSubtitleEl = document.getElementById('ramadan-subtitle');
+    const ramadanStatusBadgeTextEl = document.getElementById('ramadan-status-badge-text');
+    const ramadanDaysNumEl = document.getElementById('ramadan-days-num');
+    const ramadanDaysUnitEl = document.getElementById('ramadan-days-unit');
+    const ramadanDetailTextEl = document.getElementById('ramadan-detail-text');
+    const ramadanDuaBadgeTitleEl = document.getElementById('ramadan-dua-badge-title');
+    const copyDuaBtn = document.getElementById('copy-dua-btn');
+    const ramadanDuaArabicEl = document.getElementById('ramadan-dua-arabic');
+    const ramadanDuaKurdishEl = document.getElementById('ramadan-dua-kurdish');
+    const ramadanDuaSecondaryEl = document.getElementById('ramadan-dua-secondary');
+
     // Modal DOM
     const monthsModal = document.getElementById('months-modal');
     const modalCalendarTitle = document.getElementById('modal-calendar-title');
@@ -177,6 +191,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Clock Summary
         clockFullDateSummaryEl.textContent = `${dayName}، ${hijriData.fullString}`;
+
+        // 5. Ramadan Countdown & Spiritual Dua Widget
+        updateRamadanWidget(dateObj);
+    }
+
+    /**
+     * Update Ramadan Countdown & Spiritual Dua Widget
+     */
+    function updateRamadanWidget(currentDate) {
+        if (!ramadanDaysNumEl) return;
+        const dateObj = currentDate || ClockEngine.getBaghdadTime();
+        const rData = CalendarEngine.getRamadanStatus(dateObj);
+
+        if (ramadanCardEl) {
+            if (rData.isRamadan) {
+                ramadanCardEl.classList.add('is-ramadan-active');
+            } else {
+                ramadanCardEl.classList.remove('is-ramadan-active');
+            }
+        }
+
+        if (ramadanMainTitleEl) ramadanMainTitleEl.textContent = rData.statusTitle;
+        if (ramadanSubtitleEl) ramadanSubtitleEl.textContent = rData.subtitle;
+        if (ramadanStatusBadgeTextEl) ramadanStatusBadgeTextEl.textContent = rData.statusBadgeText;
+        if (ramadanDaysNumEl) ramadanDaysNumEl.textContent = rData.formattedDaysRemaining;
+        if (ramadanDaysUnitEl) ramadanDaysUnitEl.textContent = rData.countdownUnit;
+        if (ramadanDetailTextEl) ramadanDetailTextEl.textContent = rData.detailText;
+
+        if (ramadanDuaBadgeTitleEl) ramadanDuaBadgeTitleEl.textContent = rData.duaBadgeTitle;
+        if (ramadanDuaArabicEl) ramadanDuaArabicEl.textContent = rData.duaArabic;
+        if (ramadanDuaKurdishEl) ramadanDuaKurdishEl.textContent = rData.duaKurdish;
+        if (ramadanDuaSecondaryEl) ramadanDuaSecondaryEl.textContent = rData.duaSecondary;
     }
 
     // Register callback for live Aladhan API Hijri update
@@ -500,6 +546,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 shareLinkInput.select();
                 document.execCommand('copy');
                 showToast('لینکی ماڵپەڕ کۆپی کرا!');
+            }
+        });
+    }
+
+    if (copyDuaBtn) {
+        copyDuaBtn.addEventListener('click', function () {
+            const arabic = ramadanDuaArabicEl ? ramadanDuaArabicEl.textContent.trim() : '';
+            const kurdish = ramadanDuaKurdishEl ? ramadanDuaKurdishEl.textContent.trim() : '';
+            const secondary = ramadanDuaSecondaryEl ? ramadanDuaSecondaryEl.textContent.trim() : '';
+            const fullDuaText = `${arabic}\n${kurdish}\n\n${secondary}\n\nڕۆژژمێری ڕادیۆی سوننەت: https://date.radiosunnat.net/`;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(fullDuaText).then(() => {
+                    showToast('دوعاکە بە سەرکەوتوویی کۆپیکرا!');
+                }).catch(() => {
+                    showToast('دوعاکە کۆپیکرا!');
+                });
+            } else {
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = fullDuaText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                showToast('دوعاکە بە سەرکەوتوویی کۆپیکرا!');
             }
         });
     }

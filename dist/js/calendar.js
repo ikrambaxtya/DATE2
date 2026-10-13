@@ -183,10 +183,16 @@ const CalendarEngine = (function () {
         return null;
     }
 
+    function parseDigitString(str) {
+        if (!str) return 0;
+        const western = String(str).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+        return parseInt(western, 10);
+    }
+
     /**
      * Calculate Precision Hijri Date (With API cache check + Offline Umm al-Qura fallback)
      */
-    function gregorianToHijri(date, offsetDays = hijriOffset) {
+    function gregorianToHijri(date, offsetDays = hijriOffset, allowApiFetch = false) {
         const d = new Date(date);
         d.setDate(d.getDate() + offsetDays);
 
@@ -200,13 +206,13 @@ const CalendarEngine = (function () {
             return apiHijriCache[dateKey];
         }
 
-        // Trigger API fetch in background
-        if (offsetDays === 0 && !apiHijriCache[dateKey]) {
+        // Trigger API fetch in background ONLY when explicitly permitted (e.g. today's date)
+        if (allowApiFetch && offsetDays === 0 && !apiHijriCache[dateKey]) {
             fetchSaudiHijriApi(d);
         }
 
         // Try Saudi Arabia Umm al-Qura Intl Formatter
-        const locales = ['ar-SA-u-ca-islamic-uma', 'ar-SA-u-ca-islamic-umalqura', 'ar-SA-u-ca-islamic'];
+        const locales = ['en-u-ca-islamic-umalqura', 'ar-SA-u-ca-islamic-umalqura', 'ar-SA-u-ca-islamic', 'ar-SA-u-ca-islamic-uma'];
         for (const loc of locales) {
             try {
                 const formatter = new Intl.DateTimeFormat(loc, {
@@ -217,11 +223,11 @@ const CalendarEngine = (function () {
                 const parts = formatter.formatToParts(d);
                 let day, month, year;
                 for (const part of parts) {
-                    if (part.type === 'day') day = parseInt(part.value, 10);
-                    if (part.type === 'month') month = parseInt(part.value, 10);
-                    if (part.type === 'year') year = parseInt(part.value, 10);
+                    if (part.type === 'day') day = parseDigitString(part.value);
+                    if (part.type === 'month') month = parseDigitString(part.value);
+                    if (part.type === 'year') year = parseDigitString(part.value);
                 }
-                if (day && month && year) {
+                if (day && month && year && year >= 1300 && year <= 1600 && month >= 1 && month <= 12) {
                     const monthObj = hijriMonthsArabic[month - 1] || hijriMonthsArabic[0];
                     const formattedMonthNum = formatNumber(monthObj.monthNum);
                     return {
@@ -322,14 +328,87 @@ const CalendarEngine = (function () {
         };
     }
 
+    /**
+     * Ramadan Countdown & In-Ramadan Calculator with Authentic Duas
+     */
+    function getRamadanStatus(date, offset = hijriOffset) {
+        const baseDate = date ? new Date(date) : new Date();
+        const todayHijri = gregorianToHijri(baseDate, offset);
+        const isRamadan = (todayHijri.monthNumber === 9);
+
+        if (isRamadan) {
+            // In Ramadan: Count how many days remain of Ramadan until 1st of Shawwal
+            let cur = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+            let count = 0;
+            while (count < 35) {
+                cur.setDate(cur.getDate() + 1);
+                count++;
+                const h = gregorianToHijri(cur, offset);
+                if (h.monthNumber === 10 && h.day === 1) {
+                    break;
+                }
+            }
+            return {
+                isRamadan: true,
+                daysRemaining: count,
+                formattedDaysRemaining: formatNumber(count),
+                currentFastDay: todayHijri.day,
+                formattedFastDay: formatNumber(todayHijri.day),
+                hijriYear: todayHijri.year,
+                formattedHijriYear: formatNumber(todayHijri.year),
+                statusTitle: 'مانگی پیرۆزی ڕەمەزان',
+                subtitle: 'چەند ڕۆژی ماوە لە مانگی پیرۆزی ڕەمەزان',
+                statusBadgeText: 'ئێستا لە مانگی ڕەمەزانین',
+                countdownUnit: 'ڕۆژ ماوە لە مانگی ڕەمەزان',
+                detailText: `ئەمڕۆ ڕۆژی ${formatNumber(todayHijri.day)}ی مانگی پیرۆزی ڕەمەزانی ${formatNumber(todayHijri.year)} هـ`,
+                duaBadgeTitle: 'دوعای بەربانگ و مانگی پیرۆزی ڕەمەزان',
+                duaArabic: '«ذَهَبَ الظَّمَأُ، وَابْتَلَّتِ العُرُوقُ، وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ»',
+                duaKurdish: '«تینویەتی نەما و دەمارەکان تەڕ بوونەوە و پاداشت جێگیر بوو بە ویستی خودا.»',
+                duaSecondary: '«اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي» (خوایە تۆ لێبوردەیت و لێخۆشبوونت خۆشدەوێت، لە گوناهم خۆشبە)'
+            };
+        } else {
+            // Before/After Ramadan: Count days remaining until 1st of Ramadan
+            let cur = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+            let count = 0;
+            const targetYear = todayHijri.monthNumber > 9 ? todayHijri.year + 1 : todayHijri.year;
+            while (count < 366) {
+                cur.setDate(cur.getDate() + 1);
+                count++;
+                const h = gregorianToHijri(cur, offset);
+                if (h.monthNumber === 9 && h.day === 1) {
+                    break;
+                }
+            }
+            return {
+                isRamadan: false,
+                daysRemaining: count,
+                formattedDaysRemaining: formatNumber(count),
+                targetYear: targetYear,
+                formattedTargetYear: formatNumber(targetYear),
+                statusTitle: 'چەند ڕۆژ ماوە بۆ مانگی ڕەمەزان',
+                subtitle: 'ژماردنی ڕۆژەکانی ماون بۆ دەستپێکی مانگی پیرۆزی ڕەمەزان',
+                statusBadgeText: 'چاوەڕوانی ڕەمەزان',
+                countdownUnit: 'ڕۆژ ماوە بۆ مانگی پیرۆزی ڕەمەزان',
+                detailText: `دەستپێکی ڕەمەزانی پیرۆز بۆ ساڵی ${formatNumber(targetYear)} کۆچی`,
+                duaBadgeTitle: 'دوعای گەشتن بە مانگی پیرۆزی ڕەمەزان',
+                duaArabic: '«اللَّهُمَّ بَلِّغْنَا رَمَضَانَ، وَسَلِّمْنَا لِرَمَضَانَ، وَتَسَلَّمْهُ مِنَّا مُتَقَبَّلًا»',
+                duaKurdish: '«خوایە بمانگەیەنیت بە مانگی پیرۆزی ڕەمەزان و تەمەنمان پێ ببەخشیت، و ڕەمەزانمان بۆ ساغ بکەیتەوە، و کردەوەکانمان تێیدا لێ وەربگریت.»',
+                duaSecondary: '«اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالأَمْنِ وَالإِيمَانِ، وَالسَّلامَةِ وَالإِسْلامِ، رَبِّي وَرَبُّكَ اللَّهُ»'
+            };
+        }
+    }
+
     return {
         getKurdishDate: function (date) {
             const d = date || new Date();
             return gregorianToKurdish(d.getFullYear(), d.getMonth() + 1, d.getDate());
         },
-        getHijriDate: function (date, offset = hijriOffset) {
+        getHijriDate: function (date, offset = hijriOffset, allowApiFetch = true) {
             const d = date || new Date();
-            return gregorianToHijri(d, offset);
+            return gregorianToHijri(d, offset, allowApiFetch);
+        },
+        getRamadanStatus: function (date, offset = hijriOffset) {
+            return getRamadanStatus(date, offset);
         },
         fetchSaudiHijriApi: fetchSaudiHijriApi,
         setOnHijriUpdateListener: function(fn) {
