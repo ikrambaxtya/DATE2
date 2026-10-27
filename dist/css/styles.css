@@ -715,9 +715,30 @@ body {
 }
 
 .year-number {
-    font-size: 0.98rem;
-    font-weight: 500;
-    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.2;
+    padding: 3px 12px;
+    border-radius: 10px;
+    width: fit-content;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    transition: var(--transition-fast);
+}
+
+.year-digits {
+    font-size: 1.48rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+}
+
+.year-suffix {
+    font-size: 0.96rem;
+    font-weight: 700;
+    opacity: 0.9;
 }
 
 .view-months-btn {
@@ -762,6 +783,26 @@ body {
 
 .hijri-theme .date-number-highlight {
     color: var(--accent-gold-dark);
+}
+
+.hijri-theme .year-number {
+    background: rgba(217, 119, 6, 0.1);
+    border: 1px solid rgba(217, 119, 6, 0.25);
+    color: var(--accent-gold-dark);
+}
+
+.hijri-theme .year-digits {
+    color: var(--accent-gold-dark);
+}
+
+.hijri-theme .year-suffix {
+    color: #92400e;
+}
+
+.hijri-theme:hover .year-number {
+    background: rgba(217, 119, 6, 0.16);
+    border-color: rgba(217, 119, 6, 0.4);
+    transform: translateY(-1px);
 }
 
 .hijri-adjust-controls {
@@ -817,6 +858,26 @@ body {
     color: var(--accent-emerald);
 }
 
+.kurdish-theme .year-number {
+    background: rgba(5, 150, 105, 0.1);
+    border: 1px solid rgba(5, 150, 105, 0.25);
+    color: var(--accent-emerald-dark);
+}
+
+.kurdish-theme .year-digits {
+    color: var(--accent-emerald-dark);
+}
+
+.kurdish-theme .year-suffix {
+    color: #065f46;
+}
+
+.kurdish-theme:hover .year-number {
+    background: rgba(5, 150, 105, 0.16);
+    border-color: rgba(5, 150, 105, 0.4);
+    transform: translateY(-1px);
+}
+
 .season-badge {
     background: var(--accent-emerald-light);
     color: var(--accent-emerald-dark);
@@ -849,6 +910,26 @@ body {
 
 .gregorian-theme .date-number-highlight {
     color: var(--accent-teal);
+}
+
+.gregorian-theme .year-number {
+    background: rgba(13, 148, 136, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.25);
+    color: #0f766e;
+}
+
+.gregorian-theme .year-digits {
+    color: #0f766e;
+}
+
+.gregorian-theme .year-suffix {
+    color: #115e59;
+}
+
+.gregorian-theme:hover .year-number {
+    background: rgba(13, 148, 136, 0.16);
+    border-color: rgba(13, 148, 136, 0.4);
+    transform: translateY(-1px);
 }
 
 .day-of-year-badge {
@@ -2223,7 +2304,16 @@ body {
     }
 
     .year-number {
-        font-size: 0.95rem;
+        font-size: clamp(1.18rem, 4.2vw, 1.32rem);
+        padding: 3px 10px;
+    }
+
+    .year-digits {
+        font-size: clamp(1.28rem, 4.8vw, 1.45rem);
+    }
+
+    .year-suffix {
+        font-size: 0.92rem;
     }
 
     .view-months-btn {
@@ -2572,5 +2662,14 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 6px;
+    }
+
+    .year-number {
+        font-size: 1.15rem;
+        padding: 2px 8px;
+    }
+
+    .year-digits {
+        font-size: 1.25rem;
     }
 }

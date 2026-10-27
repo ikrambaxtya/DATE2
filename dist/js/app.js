@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const hijriData = CalendarEngine.getHijriDate(dateObj);
         hijriDayNumEl.textContent = hijriData.formattedDay;
         hijriMonthNameEl.textContent = hijriData.monthName;
-        hijriYearNumEl.textContent = `${hijriData.formattedYear} هـ`;
+        hijriYearNumEl.innerHTML = `<span class="year-digits">${hijriData.formattedYear}</span> <span class="year-suffix">هـ</span>`;
         hijriFullStrEl.textContent = hijriData.fullString;
         if (hijriMonthNumPill) hijriMonthNumPill.textContent = `مانگی ${hijriData.formattedMonthNumber}`;
 
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const kurdishData = CalendarEngine.getKurdishDate(dateObj);
         kurdishDayNumEl.textContent = kurdishData.formattedDay;
         kurdishMonthNameEl.textContent = kurdishData.monthName;
-        kurdishYearNumEl.textContent = `${kurdishData.formattedYear} کوردی`;
+        kurdishYearNumEl.innerHTML = `<span class="year-digits">${kurdishData.formattedYear}</span> <span class="year-suffix">کوردی</span>`;
         kurdishFullStrEl.textContent = kurdishData.fullString;
         kurdishSeasonEl.innerHTML = `<i class="fa-solid ${kurdishData.seasonIcon}"></i> ${kurdishData.season}`;
         if (kurdishMonthNumPill) kurdishMonthNumPill.textContent = `مانگی ${kurdishData.formattedMonthNumber}`;
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const gregorianData = CalendarEngine.getGregorianDate(dateObj);
         gregorianDayNumEl.textContent = gregorianData.formattedDay;
         gregorianMonthNameEl.textContent = gregorianData.monthNameKurdish;
-        gregorianYearNumEl.textContent = `${gregorianData.formattedYear} زاینی`;
+        gregorianYearNumEl.innerHTML = `<span class="year-digits">${gregorianData.formattedYear}</span> <span class="year-suffix">زاینی</span>`;
         gregorianFullStrEl.textContent = gregorianData.formattedStandardString;
         gregorianDayOfYearEl.textContent = `ڕۆژی ${gregorianData.formattedDayOfYear}ی ساڵ`;
         if (gregorianMonthNumPill) gregorianMonthNumPill.textContent = `مانگی ${gregorianData.formattedMonthNumber}`;
@@ -286,17 +286,20 @@ document.addEventListener('DOMContentLoaded', function () {
         let activeMonthNum = 1;
 
         if (calendarType === 'hijri') {
-            titleText = 'تەواوی مانگەکانی کۆچی';
+            const hDate = CalendarEngine.getHijriDate(bTime);
+            titleText = `تەواوی مانگەکانی کۆچی (${hDate.formattedYear} هـ)`;
             monthsList = CalendarEngine.getAllHijriMonths();
-            activeMonthNum = CalendarEngine.getHijriDate(bTime).monthNumber;
+            activeMonthNum = hDate.monthNumber;
         } else if (calendarType === 'kurdish') {
-            titleText = 'تەواوی مانگەکانی کوردی';
+            const kDate = CalendarEngine.getKurdishDate(bTime);
+            titleText = `تەواوی مانگەکانی کوردی (ساڵی ${kDate.formattedYear})`;
             monthsList = CalendarEngine.getAllKurdishMonths();
-            activeMonthNum = CalendarEngine.getKurdishDate(bTime).monthNumber;
+            activeMonthNum = kDate.monthNumber;
         } else if (calendarType === 'gregorian') {
-            titleText = 'تەواوی مانگەکانی زاینی';
+            const gDate = CalendarEngine.getGregorianDate(bTime);
+            titleText = `تەواوی مانگەکانی زاینی (ساڵی ${gDate.formattedYear})`;
             monthsList = CalendarEngine.getAllGregorianMonths();
-            activeMonthNum = CalendarEngine.getGregorianDate(bTime).monthNumber;
+            activeMonthNum = gDate.monthNumber;
         }
 
         modalCalendarTitle.textContent = titleText;
